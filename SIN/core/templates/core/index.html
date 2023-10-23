@@ -9,27 +9,30 @@
     <link rel="stylesheet" href="{% static 'core/css/custom.css' %}">
 </head>
 <body>
-    <header class="row">
-        <div class="col lg-2">
-            <img class="img-fluid" src="IMG\logoUSM.png">
+    <header class="row justify-content-center container-fluid mx-0 py-0">
+        <div class="col sm-12 lg-2">
+            <img id="miImg" class="img-fluid" src="{% static 'core/IMG/logoUSM.png' %}" alt="logo USM">
         </div>
-        <div class="col lg-10 text-center">
+        <div class="col sm-0 lg-10 xxl-8 text-center d-none d-lg-block">
             <h1>Sistema Integrado de Notificaciones</h1>
         </div>
-    </header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link" href="#">Inicio</a>
-                    <a class="nav-link" href="#">Administracion</a>
-                </div>
-            </div>
+        <div class="col sm-0 xxl-2 d-none d-xxl-block">
+            <img id="miImg" class="img-fluid" src="{% static 'core/IMG/logoUSM.png' %}" alt="logo departamento">
         </div>
-      </nav>
+    </header>
+    <nav class="navbar d-none d-lg-block d-xxl-none">
+        <div class="container-fluid justify-content-center">
+            <a class="nav-item" href="{% url 'index' %}">Inicio</a>
+            <a class="nav-item" href="/admin">Administracion</a>
+        </div>
+    </nav>
+    <div class="row row-cols-1 row-cols-lg-3 d-xxl-none justify-content-center">
+        {% block carta %}
+        {% endblock %}
+    </div>
+    <div class="row d-none d-xxl-block justify-content-center">
+        {% block carrusel %}
+        {% endblock %}
+    </div>
 </body>
 </html>
