@@ -1,16 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USM | {{title}}</title>
+    <title>USM | {{filtro}}</title>
     <link rel="stylesheet" href="{% static 'core/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/custom.css' %}">
 </head>
+
 <body>
-    <header class="row justify-content-center container-fluid mx-0 py-0">
-        <div class="col sm-12 lg-2">
+    <header class="row justify-content-center mx-0 py-0">
+        <div class="col sm-12 lg-2 d-block">
             <img id="miImg" class="img-fluid" src="{% static 'core/IMG/logoUSM.png' %}" alt="logo USM">
         </div>
         <div class="col sm-0 lg-10 xxl-8 text-center d-none d-lg-block">
@@ -21,18 +23,60 @@
         </div>
     </header>
     <nav class="navbar d-none d-lg-block d-xxl-none">
-        <div class="container-fluid justify-content-center">
-            <a class="nav-item" href="{% url 'index' %}">Inicio</a>
-            <a class="nav-item" href="/admin">Administracion</a>
+        <div class="container-fluid justify-content-evenly">
+            <a class="nav-item link-light link-underline-opacity-0" href="{% url 'index' %}">Inicio</a>
+            <a class="nav-item link-light link-underline-opacity-0" href="/admin">Administracion</a>
         </div>
     </nav>
-    <div class="row row-cols-1 row-cols-lg-3 d-xxl-none justify-content-center">
-        {% block carta %}
-        {% endblock %}
+    <div class="row row-cols-1 row-cols-lg-2 d-block d-xxl-none">
+        <form action="{% url 'index' %}" method="POST">
+            {% csrf_token %}
+            <select name="departamento" class="form-select w-25 m-3 col" aria-label="Default select example">
+                <option selected>Departamentos</option>
+                {% for c in entidades %}
+                <option value="{{c}}">{{ c }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary w-25 mx-3 col">Filtrar</button>
+        </form>
     </div>
-    <div class="row d-none d-xxl-block justify-content-center">
-        {% block carrusel %}
-        {% endblock %}
+    <div class="row row-cols-1 row-cols-md-1 row-cols-lg-3 d-xxl-none justify-content-start px-5">
+        {% for comunicado in comunicados %}
+        {% if comunicado.visible %}
+        {% if comunicado.entidad.nombre == filtro or filtro == "Departamentos" %}
+        <div class="card col m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{comunicado.titulo}}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">{{comunicado.entidad.nombre}}</h6>
+                <p class="card-text">{{comunicado.detalle_corto}}</p>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
     </div>
+    <div class="row d-none d-xxl-block justify-content-center" style="height:100px">
+        <div id="carouselExampleSlidesOnly" class="carousel slide h-100 w-100" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for comunicado in comunicados %}
+                {% if comunicado.visible %}
+                {% if comunicado.entidad.nombre == filtro or filtro == "Departamentos" %}
+                <div class="carousel-item active h-100 w-100">
+                    <div class="card d-block m-2 w-100 h-100" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{comunicado.titulo}}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{comunicado.entidad.nombre}}</h6>
+                            <p class="card-text">{{comunicado.detalle}}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'core/js/bootstrap.js' %}"></script>
 </body>
+
 </html>

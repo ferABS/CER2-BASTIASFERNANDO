@@ -1,9 +1,7 @@
 {% extends 'core/index.html' %}
+{% load static %}
 
 {% block carta %}
-
-    {%for i in range(10) %}
-    <p>carta {{i}}</p>
-    {%endfor%}
+{{comunicados}}
 
 {% endblock %}
